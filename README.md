@@ -1,11 +1,15 @@
 # What’s New In Python 3.0
 
 > 原文链接：https://docs.python.org/3/whatsnew/3.0.html
+
 >   原作者：Guido van Rossum
+
 > 责任翻译：庄心昊
 
 __！ 注意：本文对比版本为 3.0 和 2.6，如果你关心最新版本的变化，请在__ [这里](https://docs.python.org/3/whatsnew/changelog.html#changelog) __查看 change log。__
+
 __另外，如果你发现本文的机制在最新的版本中不适用，请提交issue。__
+
 __（以下为作者正文）__
 
 ---
