@@ -1,14 +1,14 @@
 # What’s New In Python 3.0
 
-原文链接：https://docs.python.org/3/whatsnew/3.0.html
-  原作者：Guido van Rossum
-责任翻译：庄心昊
+> 原文链接：https://docs.python.org/3/whatsnew/3.0.html
+>   原作者：Guido van Rossum
+> 责任翻译：庄心昊
 
 __！ 注意：本文对比版本为 3.0 和 2.6，如果你关心最新版本的变化，请在__ [这里](https://docs.python.org/3/whatsnew/changelog.html#changelog) __查看 change log。__
-
 __另外，如果你发现本文的机制在最新的版本中不适用，请提交issue。__
+__（以下为作者正文）__
 
-__以下为作者正文__
+---
 
 本文简述了 Python 3.0 相对于 2.6 版本的新功能。 Python 3.0 也被称为 “Python 3000” 或 “Py3K”，是有史以来第一个 _特意向后兼容_ 的Python版本。比普通的发行版本有更多的变化，且对于所有Python用户来说更重要。尽管如此，在充分了解了这些变化之后，你会发现 Python 其实并没有改变太多 —— 总的来说，我们主要修复了广为提及的小问题，并去除了很多无用的设计。
 
