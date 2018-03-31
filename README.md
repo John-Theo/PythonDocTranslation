@@ -72,7 +72,7 @@ __注意：__
 - 现在，[range()](https://docs.python.org/3/library/stdtypes.html#range) 函数的使用和 `xrange()` 函数曾经的用法类似，但是前者可以处理任意大小的值，后者不再存在。
 - [zip()](https://docs.python.org/3/library/functions.html#zip) 现在也返回迭代器。
 
-<span class="q1"><span>
+<span class="q1"></span>
 > [1] 译者注：关于更好理解 views 的概念，请看下例：
 
 ```python
@@ -104,6 +104,6 @@ __注意：__
 {'bacon'}  
 ```
 
-<span class="q1"><span>
+<span class="q2"></span>
 > [2] 译者注：原文对“会在最短序列的末端停止”的解释是：
 With multiple iterables, the iterator stops when the shortest iterable is exhausted. For cases where the function inputs are already arranged into argument tuples, see [itertools.starmap()](https://docs.python.org/3/library/itertools.html#itertools.starmap).
