@@ -65,33 +65,33 @@ __注意：__
 ### 不知道咋翻译
 
 一些著名的 API 接口不再返回列表（list）：
-- [dict](https://docs.python.org/3/library/stdtypes.html#dict) 方法 [dict.keys()](https://docs.python.org/3/library/stdtypes.html#dict.keys)，[dict.items()](https://docs.python.org/3/library/stdtypes.html#dict.items) 和 [dict.values()](https://docs.python.org/3/library/stdtypes.html#dict.values) 不再返回 list，而返回 view。
+- [dict](https://docs.python.org/3/library/stdtypes.html#dict) 方法 [dict.keys()](https://docs.python.org/3/library/stdtypes.html#dict.keys)，[dict.items()](https://docs.python.org/3/library/stdtypes.html#dict.items) 和 [dict.values()](https://docs.python.org/3/library/stdtypes.html#dict.values) 不再返回 list，而返回 view 对象。
 > 译者注：关于更好理解 views 的概念，请看下例：
-```
->>> dishes = {'eggs': 2, 'sausage': 1, 'bacon': 1, 'spam': 500}
->>> keys = dishes.keys()
->>> values = dishes.values()  
-  
->>> # iteration  
->>> n = 0  
->>> for val in values:  
-...     n += val  
->>> print(n)  
-504  
-  
->>> # keys and values are iterated over in the same order  
->>> list(keys)  
-['eggs', 'bacon', 'sausage', 'spam']  
->>> list(values)  
-[2, 1, 1, 500]  
-  
->>> # view objects are dynamic and reflect dict changes  
->>> del dishes['eggs']  
->>> del dishes['sausage']  
->>> list(keys)  
-['spam', 'bacon']  
-  
->>> # set operations  
->>> keys & {'eggs', 'bacon', 'salad'}  
-{'bacon'}  
-```
+  ```python
+  >>> dishes = {'eggs': 2, 'sausage': 1, 'bacon': 1, 'spam': 500}
+  >>> keys = dishes.keys()
+  >>> values = dishes.values()  
+
+  >>> # iteration（译者注：更像是枚举？）
+  >>> n = 0  
+  >>> for val in values:  
+  ...     n += val  
+  >>> print(n)  
+  504  
+
+  >>> # keys 和 values 以相同的顺序被遍历
+  >>> list(keys)
+  ['eggs', 'bacon', 'sausage', 'spam']  
+  >>> list(values)  
+  [2, 1, 1, 500]  
+
+  >>> # view 对象动态反映 dict 的变化（译者注：从这个定义来看，view 也许可以翻译为“快照”）  
+  >>> del dishes['eggs']  
+  >>> del dishes['sausage']  
+  >>> list(keys)  
+  ['spam', 'bacon']  
+
+  >>> # 集合操作
+  >>> keys & {'eggs', 'bacon', 'salad'}  
+  {'bacon'}  
+  ```
