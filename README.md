@@ -29,7 +29,7 @@ __（以下为作者正文）__
 
 ### print 是一个函数
 `print` 语句已被 [print()](https://docs.python.org/3/library/functions.html#print) 函数替代，其中的关键字参数替换了原先 `print` 语句的大部分特殊语法（[__PEP 3105__](https://www.python.org/dev/peps/pep-3105)）。 例程：
-```
+```python
 Old: print "The answer is", 2*2
 New: print("The answer is", 2*2)
 
