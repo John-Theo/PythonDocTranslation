@@ -65,17 +65,16 @@ __注意：__
 ### 返回 Views 对象 和 迭代器 而不再是 Lists
 
 一些著名的 API 接口不再返回列表（list）：
-- [dict](https://docs.python.org/3/library/stdtypes.html#dict) 方法 [dict.keys()](https://docs.python.org/3/library/stdtypes.html#dict.keys)，[dict.items()](https://docs.python.org/3/library/stdtypes.html#dict.items) 和 [dict.values()](https://docs.python.org/3/library/stdtypes.html#dict.values) 不再返回 list，而返回 view 对象。[1][q1]例如，这样的表达不再生效：`k = d.keys(); k.sort()`。需要使用 `k = sorted(d)` 来代替（这在 Python 2.5 中一样适用，且一样快捷）。
+- [dict](https://docs.python.org/3/library/stdtypes.html#dict) 方法 [dict.keys()](https://docs.python.org/3/library/stdtypes.html#dict.keys)，[dict.items()](https://docs.python.org/3/library/stdtypes.html#dict.items) 和 [dict.values()](https://docs.python.org/3/library/stdtypes.html#dict.values) 不再返回 list，而返回 view 对象 [1](#q1)。例如，这样的表达不再生效：`k = d.keys(); k.sort()`。需要使用 `k = sorted(d)` 来代替（这在 Python 2.5 中一样适用，且一样快捷）。
 - 同时，`dict.iterkeys()`，`dict.iteritems()` 和 `dict.itervalues()` 方法也不再受支持。
 - [map()](https://docs.python.org/3/library/functions.html#map) 和 [filter()](https://docs.python.org/3/library/functions.html#filter) 返回迭代器（iterators）。如果你确实需要 list 对象，且传入序列全部等长，一个便捷的解决方案是把 [map()](https://docs.python.org/3/library/functions.html#map) 嵌套在 [list()](https://docs.python.org/3/library/stdtypes.html#list) 里，例如 `list(map(...))`，但是，一个更好的解决方案是尽量使用 list comprehension（尤其当原始代码使用了 [lambda](https://docs.python.org/3/reference/expressions.html#lambda) 时），或者重写代码，使其不需要用到 list（译者注：耿直了老铁）。一个特别的小技巧： [map()](https://docs.python.org/3/library/functions.html#map) 作为函数的 side effects 调用；正确的变形是使用普通的 [for](https://docs.python.org/3/reference/compound_stmts.html#for) 循环（因为创建一个 list 也是浪费）。
-如果传入序列并不等长，[map()](https://docs.python.org/3/library/functions.html#map) 会在最短序列的末端停止。若希望和 Python 2.x 中的 [map()](https://docs.python.org/3/library/functions.html#map) 完全兼容，同样可以把序列嵌套在 `itertools.zip_longest()` 中，例如：`map(func, *sequences)` 将写为 `list(map(func, itertools.zip_longest(*sequences)))`。
-> 译者注：原文对“会在最短序列的末端停止”的解释是：
-With multiple iterables, the iterator stops when the shortest iterable is exhausted. For cases where the function inputs are already arranged into argument tuples, see [itertools.starmap()](https://docs.python.org/3/library/itertools.html#itertools.starmap).
+如果传入序列并不等长，[map()](https://docs.python.org/3/library/functions.html#map) 会在最短序列的末端停止 [2](#q2)。若希望和 Python 2.x 中的 [map()](https://docs.python.org/3/library/functions.html#map) 完全兼容，同样可以把序列嵌套在 `itertools.zip_longest()` 中，例如：`map(func, *sequences)` 将写为 `list(map(func, itertools.zip_longest(*sequences)))`。
 - 现在，[range()](https://docs.python.org/3/library/stdtypes.html#range) 函数的使用和 `xrange()` 函数曾经的用法类似，但是前者可以处理任意大小的值，后者不再存在。
 - [zip()](https://docs.python.org/3/library/functions.html#zip) 现在也返回迭代器。
 
-[q1]: 
-> 译者注：关于更好理解 views 的概念，请看下例：
+<span class="q1"><span>
+> [1] 译者注：关于更好理解 views 的概念，请看下例：
+
 ```python
 >>> dishes = {'eggs': 2, 'sausage': 1, 'bacon': 1, 'spam': 500}
 >>> keys = dishes.keys()
@@ -104,3 +103,7 @@ With multiple iterables, the iterator stops when the shortest iterable is exhaus
 >>> keys & {'eggs', 'bacon', 'salad'}  
 {'bacon'}  
 ```
+
+<span class="q1"><span>
+> [2] 译者注：原文对“会在最短序列的末端停止”的解释是：
+With multiple iterables, the iterator stops when the shortest iterable is exhausted. For cases where the function inputs are already arranged into argument tuples, see [itertools.starmap()](https://docs.python.org/3/library/itertools.html#itertools.starmap).
