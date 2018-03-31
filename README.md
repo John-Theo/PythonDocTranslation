@@ -73,6 +73,7 @@ __注意：__
 - [zip()](https://docs.python.org/3/library/functions.html#zip) 现在也返回迭代器。
 
 <div class="q1"></div>
+
 > [1] 译者注：关于更好理解 views 的概念，请看下例：
 
 ```python
@@ -105,5 +106,6 @@ __注意：__
 ```
 
 <div class="q2"></div>
+
 > [2] 译者注：原文对“会在最短序列的末端停止”的解释是：
 With multiple iterables, the iterator stops when the shortest iterable is exhausted. For cases where the function inputs are already arranged into argument tuples, see [itertools.starmap()](https://docs.python.org/3/library/itertools.html#itertools.starmap).
