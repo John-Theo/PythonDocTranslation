@@ -33,15 +33,65 @@ __（以下为作者正文）__
 Old: print "The answer is", 2*2
 New: print("The answer is", 2*2)
 
-Old: print x,           # Trailing comma suppresses newline
-New: print(x, end=" ")  # Appends a space instead of a newline
+Old: print x,           # 结尾的逗号使输出结束后不换行
+New: print(x, end=" ")  # 每行结束后连接上end关键字传入的字符（译者注：本例中是一个空格）
 
-Old: print              # Prints a newline
-New: print()            # You must call the function!
+Old: print              # 输出新的一行
+New: print()            # 你必须调用函数！
 
+# 译者注：输出重定向
 Old: print >>sys.stderr, "fatal error"
 New: print("fatal error", file=sys.stderr)
 
-Old: print (x, y)       # prints repr((x, y))
-New: print((x, y))      # Not the same as print(x, y)!
+Old: print (x, y)       # 输出 repr((x, y))（译者注：__repr__是魔术功能）
+New: print((x, y))      # 和 print(x, y)不完全相同！（译者注：新旧表达作用一致）
+```
+
+您也可以自定义元素之间的分隔符，例如：
+```
+print("There are <", 2**32, "> possibilities!", sep="")
+```
+__输出：__
+```
+There are <4294967296> possibilities!
+```
+__注意：__
+
+- [print()](https://docs.python.org/3/library/functions.html#print) 函数不支持旧 `print` 申明的 `softspace` 特征。例如在 Python 2.x 中，`print "A\n", "B"` 会输出 `"A\nB\n"`；但是，在 Python 3.x 中，`print "A\n", "B"` 输出 `"A\n B\n"`。
+- 刚开始在交互模式中，你会发现自己码上很多旧的 `print x` 表达。是时候训练你的手指猛戳新的 `print(x)` 了！
+- 在使用 `2to3` source-to-source 转换工具的时候，所有的 `print` 表达会自动转化成 [print()](https://docs.python.org/3/library/functions.html#print) 函数调用，所以这对比较大的项目不是特别大的麻烦。
+
+
+### 不知道咋翻译
+
+一些著名的 API 接口不再返回列表（list）：
+- [dict](https://docs.python.org/3/library/stdtypes.html#dict) 方法 [dict.keys()](https://docs.python.org/3/library/stdtypes.html#dict.keys)，[dict.items()](https://docs.python.org/3/library/stdtypes.html#dict.items) 和 [dict.values()](https://docs.python.org/3/library/stdtypes.html#dict.values) 不再返回 list，而返回 view。
+> 译者注：关于更好理解 views 的概念，请看下例：
+```
+>>> dishes = {'eggs': 2, 'sausage': 1, 'bacon': 1, 'spam': 500}
+>>> keys = dishes.keys()
+>>> values = dishes.values()  
+  
+>>> # iteration  
+>>> n = 0  
+>>> for val in values:  
+...     n += val  
+>>> print(n)  
+504  
+  
+>>> # keys and values are iterated over in the same order  
+>>> list(keys)  
+['eggs', 'bacon', 'sausage', 'spam']  
+>>> list(values)  
+[2, 1, 1, 500]  
+  
+>>> # view objects are dynamic and reflect dict changes  
+>>> del dishes['eggs']  
+>>> del dishes['sausage']  
+>>> list(keys)  
+['spam', 'bacon']  
+  
+>>> # set operations  
+>>> keys & {'eggs', 'bacon', 'salad'}  
+{'bacon'}  
 ```
