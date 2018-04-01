@@ -109,3 +109,22 @@ __注意：__
 
 > [2] 译者注：原文对“会在最短序列的末端停止”的解释是：
 With multiple iterables, the iterator stops when the shortest iterable is exhausted. For cases where the function inputs are already arranged into argument tuples, see [itertools.starmap()](https://docs.python.org/3/library/itertools.html#itertools.starmap).
+
+
+### 大小比较
+
+Python 3.0 简化了大小比较的流程：
+
+- 当表达式没有天然可比的标度时，顺序比较操作符 (`<`, `<=`, `>=`, `>`) 会抛出一个 TypeError exception。因此，诸如 `1 < ''`，`0 > None` 或 `len <= len` 这样的表达式不再合法，而对于比如 `None < None` 这样的表达，则会抛出一个 [TypeError](https://docs.python.org/3/library/exceptions.html#TypeError) 而不是返回 `False`。这就意味着对一个异质的 list 排序不再可行——所有元素必须互相之间可比。值得注意的是，这一限制对 `==` 和 `!=` 操作符并不存在：不同类型的对象比较结果总是不同。
+- builtin.sorted() 和 [list.sort()](https://docs.python.org/3/library/stdtypes.html#list.sort) 不再接受 _cmp_ 参数指定的比较函数，而使用键值对指定。注意：_key_ 和 _reverse_ 参数现在只能通过键值对指定。
+- cmp() 函数应该被视为不存在了，而 \_\_cmp\_\_() 魔术方法也不再受支持。现在使用 [\_\_lt\_\_()](https://docs.python.org/3/reference/datamodel.html#object.__lt__) 来排序， [\_\_eq\_\_()](https://docs.python.org/3/reference/datamodel.html#object.__eq__) 配合 [\_\_hash\_\_()](https://docs.python.org/3/reference/datamodel.html#object.__hash__) 使用，以及其他所需的比较操作符。（如果你真的很想实现 cmp() 的功能，你可以使用如下表达式 `(a > b) - (a < b)` ，它的效果和 `cmp(a, b)` 相同。）
+
+> \_\_cmp\_\_() 魔术方法在目前的 python 3.6.4 中依然受到支持，但 cmp() 函数确实不见了。
+
+#### 整数
+
+- [__PEP 237__](https://www.python.org/dev/peps/pep-0237)：事实上，long （译者注：长整型）被重命名为 [int](https://docs.python.org/3/library/functions.html#int)。这就意味着，只有一个內建（built-in）的叫做 [int](https://docs.python.org/3/library/functions.html#int) 的整形，但是从表现来看，它和原先的 long 差不多。
+- [__PEP 238__](https://www.python.org/dev/peps/pep-0238)：一个诸如 `1/2` 的表达式返回一个 float。而使用 `1//2` 来得到截尾（取整）的结果。（后面的表达形式已经存在了数年，至少从 Python 2.2 开始就有了。）
+- 因为对整形的值不再有限制， `sys.maxint` 常量被取消。但是 `sys.maxsize` 可以被用作一个大于任何 practical list 和 string index（译者注：字符串索引？） 的整数。它符合现实的“自然”整数的大小，并且和上一次同一平台中发布版本中的 `sys.maxint` 相同（如果编译环境完全相同的话）。
+- 长整数的 [repr()](https://docs.python.org/3/library/functions.html#repr) 函数不需要再尾随一个 `L` 了，所以无条件 strip 该对象的代码将会删去最后一位数字。（使用 [str()](https://docs.python.org/3/library/stdtypes.html#str) 替代。）
+- 八进制表示不再写作 `0720` 这样的形式；而使用例如 `0o720` 的形式来代替。
