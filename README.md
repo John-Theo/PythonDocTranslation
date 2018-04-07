@@ -121,10 +121,21 @@ Python 3.0 简化了大小比较的流程：
 
 > \_\_cmp\_\_() 魔术方法在目前的 python 3.6.4 中依然受到支持，但 cmp() 函数确实不见了。
 
-#### 整数
+### 整数
 
 - [__PEP 237__](https://www.python.org/dev/peps/pep-0237)：事实上，long （译者注：长整型）被重命名为 [int](https://docs.python.org/3/library/functions.html#int)。这就意味着，只有一个內建（built-in）的叫做 [int](https://docs.python.org/3/library/functions.html#int) 的整形，但是从表现来看，它和原先的 long 差不多。
 - [__PEP 238__](https://www.python.org/dev/peps/pep-0238)：一个诸如 `1/2` 的表达式返回一个 float。而使用 `1//2` 来得到截尾（取整）的结果。（后面的表达形式已经存在了数年，至少从 Python 2.2 开始就有了。）
 - 因为对整形的值不再有限制， `sys.maxint` 常量被取消。但是 `sys.maxsize` 可以被用作一个大于任何 practical list 和 string index（译者注：字符串索引？） 的整数。它符合现实的“自然”整数的大小，并且和上一次同一平台中发布版本中的 `sys.maxint` 相同（如果编译环境完全相同的话）。
 - 长整数的 [repr()](https://docs.python.org/3/library/functions.html#repr) 函数不需要再尾随一个 `L` 了，所以无条件 strip 该对象的代码将会删去最后一位数字。（使用 [str()](https://docs.python.org/3/library/stdtypes.html#str) 替代。）
 - 八进制表示不再写作 `0720` 这样的形式；而使用例如 `0o720` 的形式来代替。
+
+### Text Vs. Data 取代 Unicode Vs. 8-bit
+
+你此前关于 二进制数据 和 Unicode 的 认识被全部改变了。
+
+- Python 3.0 使用 _text_ 和 （二进制）数据 的概念来取代 Unicode 字符串 和 8位字符串。所有的 text 都是 Unicode；而已编码的 Unicode（数据）则被作为 二进制数据。用来存放 text 的类型是 [str](https://docs.python.org/3/library/stdtypes.html#str)，用来存放数据（data）的数据类型是字节（byte）。Python 3.0 和 2.x 之间最大的区别是任何企图混淆 text 和 data 的做法都会引发 [TypeError](https://docs.python.org/3/library/exceptions.html#TypeError)；而如果你要在 Python 2.x 中将 Unicode 和 8位字符串 混合使用，当 8位字符串 正好只有7位（ASCII）时，是没问题的；但当其中包含非ASCII值时，就会引发 [UnicodeDecodeError](https://docs.python.org/3/library/exceptions.html#UnicodeDecodeError) 错误。这样针对数值的做法在近几年引起了众多的不满。
+- 因为这一点原则性的变化，几乎所有使用Unicode，编码或二进制数据的代码都需要更改。这项改变是有建设性的，因为在 2.x 版本中，由编码和非编码字符混合使用导致了非常多的bug。 要在 Python 2.x 中准备好，请对所有未编码的 text 使用 Unicode，并且对二进制或已编码数据使用 [str](https://docs.python.org/3/library/stdtypes.html#str)。 然后 `2to3` 工具将为您完成大部分工作。
+- 以后，您不需要再对 Unicode 文本使用 `u"..."` 这样的表达了。然而，您仍然需要对二进制数据使用 `b"..."` 这样的表达。
+- 因为 [str](https://docs.python.org/3/library/stdtypes.html#str) 和 [bytes](https://docs.python.org/3/library/stdtypes.html#bytes) 类型不能混用，您必须明确声明两者之间的转换。使用 [str.encode()](https://docs.python.org/3/library/stdtypes.html#str.encode) 来将 [str](https://docs.python.org/3/library/stdtypes.html#str) 转换为 [bytes](https://docs.python.org/3/library/stdtypes.html#bytes)，[bytes.decode()](https://docs.python.org/3/library/stdtypes.html#bytes.decode) 反之。你也可以分别使用 `bytes(s, encoding=...)` 和 `str(b, encoding=...)`。
+
+和 [str](https://docs.python.org/3/library/stdtypes.html#str) 一样，[bytes](https://docs.python.org/3/library/stdtypes.html#bytes) 类型也是不可变的。有一个单独的 _可变_ 类型来保存缓冲（buffered）的二进制数据，[bytearray](https://docs.python.org/3/library/stdtypes.html#bytearray)。几乎所有接受 [bytes](https://docs.python.org/3/library/stdtypes.html#bytes) 的接口也接受 [bytearray](https://docs.python.org/3/library/stdtypes.html#bytearray)。可变的 API 基于 collections.MutableSequence。
